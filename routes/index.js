@@ -13,15 +13,15 @@ router.get('/', (req, res) => {
 // Signup route
 router.post('/signup', async (req, res) => {
   try {
-    const { username, password} = req.body;
+    const { username,email, password} = req.body;
 
-    const existingUser = await User.findOne({ username });
+    const existingUser = await User.findOne({ username,email});
     if (existingUser) {
       return res.status(400).json({ message: 'Username already exists' });
     }
 
     const hashedPassword = await bcrypt.hash(password, saltRounds);
-    const newUser = new User({ username, password: hashedPassword});
+    const newUser = new User({ username,email, password:hashedPassword});
 
     await newUser.save();
     res.status(201).redirect('/login');
@@ -45,9 +45,9 @@ router.get('/login',(req,res)=>{
 })
 router.post('/login', async (req, res) => {
   try {
-    const { username, password } = req.body;
+    const { email, password } = req.body;
 
-    const user = await User.findOne({ username });
+    const user = await User.findOne({ email });
     if (!user) {
       return res.status(400).json({ message: 'Invalid username or password' });
     }
