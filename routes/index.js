@@ -13,7 +13,7 @@ router.get('/', (req, res) => {
 // Signup route
 router.post('/signup', async (req, res) => {
   try {
-    const { username, password,date } = req.body;
+    const { username, password} = req.body;
 
     const existingUser = await User.findOne({ username });
     if (existingUser) {
@@ -21,7 +21,7 @@ router.post('/signup', async (req, res) => {
     }
 
     const hashedPassword = await bcrypt.hash(password, saltRounds);
-    const newUser = new User({ username, password: hashedPassword,date});
+    const newUser = new User({ username, password: hashedPassword});
 
     await newUser.save();
     res.status(201).redirect('/login');
@@ -36,7 +36,7 @@ router.get('/signup', (req, res) => {
 
 // Login route (You can add the login route here)
 
-module.exports = router;
+
 
 
 // Login route
