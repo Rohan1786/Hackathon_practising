@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
+
+    <style>
+       
+    </style>
+</head>
+
+<body>
+    <!-- <button>click me</button> -->
+
+
+
+
+    <div class="container-avil">
+        <h2>Availability</h2>
+
+        <div class="date">
+
+        </div>
+
+        <div class="tables">
+
+            <div class="pair2 col">
+                <h3>Table size 2</h3>
+                <div class="avil-box">
+                    Availabile
+                    <span class="material-symbols-outlined check">check</span>
+                </div>
+                <div class="avil-box">
+                    Availabile
+                    <span class="material-symbols-outlined check">check</span>
+                </div>
+                <div class="avil-box">
+                    Availabile
+                    <span class="material-symbols-outlined check">check</span>
+                </div>
+                <div class="avil-box">
+                    Availabile
+                    <span class="material-symbols-outlined check">check</span>
+                </div>
+            </div>
+
+            <div class="pair4 col">
+                <h3>Table size 4</h3>
+                <div class="avil-box">
+                    Availabile
+                    <span class="material-symbols-outlined check">check</span>
+                </div>
+                <div class="avil-box">
+                    Availabile
+                    <span class="material-symbols-outlined check">check</span>
+                </div>
+                <div class="avil-box">
+                    Availabile
+                    <span class="material-symbols-outlined check">check</span>
+                </div>
+            </div>
+
+
+            <div class="pair6 col">
+                <h3>Table size 6</h3>
+                <div class="avil-box">
+                    Availabile
+                    <span class="material-symbols-outlined check">check</span>
+                </div>
+                <div class="avil-box">
+                    Availabile
+                    <span class="material-symbols-outlined check">check</span>
+                </div>
+                <div class="avil-box">
+                    Availabile
+                    <span class="material-symbols-outlined check">check</span>
+                </div>
+            </div>
+
+            <div class="pair10 col">
+                <h3>Table size 10</h3>
+                <div class="avil-box">
+                    Availabile
+                    <span class="material-symbols-outlined check">check</span>
+                </div>
+                <div class="avil-box">
+                    Availabile
+                    <span class="material-symbols-outlined check">check</span>
+                </div>
+                <div class="avil-box">
+                    Availabile
+                    <span class="material-symbols-outlined check">check</span>
+                </div>
+            </div>
+        </div>
+
+        <button class="confirm-btn">Book</button>
+    </div>
+
+
+
+    <script>
+
+
+        // document.querySelector(".avil-box").addEventListener("click", ()=>{
+        //     const itm = document.querySelector(".check");
+        //     // itm.forEach(item => {
+        //         itm.style.opacity = "1";
+        //         console.log(1);
+        //     // });
+        // })
+
+
+        const avilBoxes = document.querySelectorAll(".avil-box");
+        const checks = document.querySelectorAll(".check");
+        const confirmBtn = document.querySelector(".confirm-btn");
+
+        avilBoxes.forEach((box, index) => {
+            box.addEventListener("click", () => {
+                // Hide all .check elements first
+                // checks.forEach(check => {
+                //     check.style.opacity = "0";
+                // });
+
+                // Show the corresponding .check element
+                // checks[index].style.opacity ="1"
+                
+                if (checks[index].style.opacity === "1") {
+                    checks[index].style.opacity = "0"
+                    avilBoxes[index].style.backgroundColor = "rgb(255 181 69)";
+
+                }
+                else {
+                    avilBoxes[index].style.backgroundColor = "rgb(39 247 146)"
+                    checks[index].style.opacity = "1"
+                    confirmBtn.style.opacity = "1"
+                }
+            });
+        });
+
+    </script>
+
+</body>
+
+</html>

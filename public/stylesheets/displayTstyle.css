@@ -1,0 +1,87 @@
+@import url('https://fonts.googleapis.com/css2?family=Baloo+2:wght@400..800&display=swap');
+
+
+body {
+    background-color: #1f1d2b;
+    color: white;
+    font-family: "Baloo 2", sans-serif;
+}
+
+.box {
+    width: 100px;
+    height: 100px;
+    background-color: aquamarine;
+    border-radius: 10px;
+    display: col;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    cursor: pointer;
+}
+
+.container-avil {
+    /* border: 2px solid black; */
+    width: 60vw;
+    margin: auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    text-align: center;
+    align-items: center;
+}
+
+.tables {
+
+    display: flex;
+    gap: 40px;
+    padding: 10px;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.avil-box {
+    width: 100px;
+    height: 20px;
+    background-color: rgb(255 181 69);
+    padding: 15px;
+    font-size: 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    color: black;
+}
+
+.col {
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+    align-items: center;
+    text-align: center;
+}
+
+.avil-box .check {
+    position: absolute;
+    width: 30px;
+    height: 30px;
+    background-color: rgb(0, 0, 0);
+    border-radius: 50%;
+    top: -15px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    /* display: none; */
+    opacity: -1;
+    color: white;
+}
+
+.confirm-btn{
+    padding: 10px;
+    /* width: 20px; */
+    font-weight: bold;
+    border-radius: 5px;
+    font-size: 20px;
+    opacity: 0;
+}
