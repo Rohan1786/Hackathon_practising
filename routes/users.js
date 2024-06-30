@@ -112,26 +112,14 @@ const userSchema = new mongoose.Schema({
 
 // Define the Order schema
 const orderSchema = new mongoose.Schema({
-  username: {
-    type: String,
-    required: true
-  },
-  date: {
-    type: Date,
-    required: true
-  },
-  phoneNumber: {
-    type: String,
-    required: true
-  },
-  email: {
-    type: String,
-    required: true
-  },
-  paymentMethod: {
-    type: String,
-    required: true,
-    enum: ['Credit Card', 'Debit Card', 'PayPal']
+  username: { type: String, required: true },
+  date: { type: Date, required: true },
+  phoneNumber: { type: String, required: true },
+  email: { type: String, required: true },
+  paymentMethod: { 
+    type: String, 
+    required: true, 
+    enum: ['Credit Card', 'Debit Card', 'PayPal'] // Updated to match form values
   }
 });
 const adminSchema = new mongoose.Schema({

@@ -199,6 +199,13 @@ router.post('/login', async (req, res) => {
 router.post('/order', async (req, res) => {
   try {
     const { username, date, phoneNumber, email, paymentMethod } = req.body;
+
+    // Check if an order with the same username and date already exists
+    const existingOrder = await Order.findOne({ username, date });
+    if (existingOrder) {
+      return res.json({ success: false, message: 'An order with this username and date already exists.' });
+    }
+
     const newOrder = new Order({
       username,
       date,
@@ -207,16 +214,43 @@ router.post('/order', async (req, res) => {
       paymentMethod
     });
     await newOrder.save();
-    res.send('Order placed successfully');
+
+    // Redirect to the user page with the username as a query parameter
+    res.redirect(`/userpage?username=${encodeURIComponent(username)}`);
   } catch (error) {
     console.error('Error placing order:', error);
-    res.status(500).send('An error occurred while placing the order');
+    res.status(500).json({ success: false, message: 'An error occurred while placing the order' });
   }
 });
 
 router.get('/order', (req, res) => {
   res.render('order');
 });
+
+router.get('/userpage', async (req, res) => {
+  try {
+    const username = req.query.username;
+
+    // Find the order by username
+    const order = await Order.findOne({ username });
+
+    if (!order) {
+      return res.status(404).json({ success: false, message: 'No order found for this user.' });
+    }
+
+    console.log(order.username);
+
+    // Render the userpage.ejs and pass the order data
+    res.render('userpage', {
+      order
+    });
+  } catch (error) {
+    console.error('Error fetching user data:', error);
+    res.status(500).json({ success: false, message: 'An error occurred while fetching the user data' });
+  }
+});
+
+
 router.get('/admin-login', (req, res) => {
   
     res.render('admin-login');
@@ -259,6 +293,8 @@ router.get('/admin-login', (req, res) => {
     res.render('admin');
   });
   
-
+router.get('/admin-dashboard',(req,res)=>{
+  res.render('admin-dashboard')
+})
 module.exports = router;
 
