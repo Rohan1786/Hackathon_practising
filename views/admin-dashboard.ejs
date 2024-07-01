@@ -1,87 +1,72 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Admin Dashboard</title>
-  <!-- Bootstrap CSS -->
-  <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
-  <!-- Custom CSS -->
-  <style>
-    .fade-in {
-      animation: fadeIn 1s ease-in-out;
-    }
-
-    @keyframes fadeIn {
-      from {
-        opacity: 0;
-      }
-      to {
-        opacity: 1;
-      }
-    }
-
-    .btn-verify {
-      background-color: #28a745;
-      color: white;
-    }
-
-    .btn-cancel {
-      background-color: #dc3545;
-      color: white;
-    }
-  </style>
+  <link rel="stylesheet" href="/path/to/your/styles.css">
 </head>
-
 <body>
-  <div class="container mt-5">
+  <div class="container">
     <h1>Admin Dashboard</h1>
-    <h2>Order Statistics</h2>
-    <table class="table table-bordered table-hover fade-in">
-      <thead class="thead-dark">
+
+    <h2>Manage Tables</h2>
+    <form action="/add-table" method="POST">
+      <div class="form-group">
+        <label for="tableNumber">Table Number:</label>
+        <input type="number" id="tableNumber" name="tableNumber" required>
+      </div>
+      <button type="submit">Add Table</button>
+    </form>
+
+    <h2>Update Table Availability</h2>
+    <form action="/update-table" method="POST">
+      <div class="form-group">
+        <label for="tableNumber">Table Number:</label>
+        <input type="number" id="updateTableNumber" name="tableNumber" required>
+      </div>
+      <div class="form-group">
+        <label for="available">Available:</label>
+        <select id="available" name="available" required>
+          <option value="true">Yes</option>
+          <option value="false">No</option>
+        </select>
+      </div>
+      <button type="submit">Update Table</button>
+    </form>
+
+    <h2>Manage Orders</h2>
+    <table>
+      <thead>
         <tr>
+          <th>Username</th>
           <th>Date</th>
           <th>Hours</th>
-          <th>Number of Users</th>
+          <th>Phone Number</th>
+          <th>Email</th>
+          <th>Payment Method</th>
           <th>Actions</th>
         </tr>
       </thead>
       <tbody>
-        <% for (let key in orderStatistics) { %>
-          <% const [date, hours] = key.split('-'); %>
+        <% orders.forEach(order => { %>
           <tr>
-            <td><%= date %></td>
-            <td><%= hours %></td>
-            <td><%= orderStatistics[key].count %></td>
+            <td><%= order.username %></td>
+            <td><%= order.date %></td>
+            <td><%= order.hours %></td>
+            <td><%= order.phoneNumber %></td>
+            <td><%= order.email %></td>
+            <td><%= order.paymentMethod %></td>
             <td>
-              <button class="btn btn-verify">Verify</button>
-              <button class="btn btn-cancel">Cancel</button>
+              <form action="/delete-order" method="POST" style="display: inline;">
+                <input type="hidden" name="orderId" value="<%= order._id %>">
+                <button type="submit">Delete</button>
+              </form>
             </td>
           </tr>
-        <% } %>
+        <% }); %>
       </tbody>
     </table>
   </div>
-
-  <!-- Bootstrap JS and dependencies -->
-  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
-  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-  <!-- Custom JS -->
-  <script>
-    document.querySelectorAll('.btn-verify').forEach(button => {
-      button.addEventListener('click', () => {
-        alert('Order verified!');
-      });
-    });
-
-    document.querySelectorAll('.btn-cancel').forEach(button => {
-      button.addEventListener('click', () => {
-        alert('Order canceled!');
-      });
-    });
-  </script>
 </body>
-
 </html>

@@ -165,27 +165,14 @@ router.get('/admin', isAuthenticated, (req, res) => {
 
 router.get('/admin-dashboard', async (req, res) => {
   try {
-    // Fetch all orders
-    const orders = await Order.find();
-
-    // Aggregate data to get the number of users who ordered at each time slot
-    const orderStatistics = orders.reduce((acc, order) => {
-      const key = `${order.date}-${order.hours}`;
-      if (!acc[key]) {
-        acc[key] = { count: 0, orders: [] };
-      }
-      acc[key].count += 1;
-      acc[key].orders.push(order);
-      return acc;
-    }, {});
-
-    // Render the admin dashboard with the aggregated data
-    res.render('admin-dashboard', { orderStatistics });
+    const orders = await Order.find().lean();
+    res.render('admin-dashboard', { orders });
   } catch (error) {
     console.error('Error fetching orders:', error);
-    res.status(500).json({ success: false, message: 'An error occurred while fetching the orders' });
+    res.status(500).json({ message: 'Error fetching orders', error });
   }
 });
+
 
 
 router.post('/add-table', async (req, res) => {
@@ -214,6 +201,16 @@ router.get('/hi',(req,res)=>{
   res.render('chatbot')
 });
 
+router.post('/delete-order', async (req, res) => {
+  try {
+    const { orderId } = req.body;
+    await Order.findByIdAndDelete(orderId);
+    res.redirect('/admin-dashboard');
+  } catch (error) {
+    console.error('Error deleting order:', error);
+    res.status(500).json({ message: 'Error deleting order', error });
+  }
+});
 
 
 
