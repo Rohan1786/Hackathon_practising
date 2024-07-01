@@ -3,11 +3,69 @@ const router = express.Router();
 const bcrypt = require('bcrypt');
 const { User, Admin, Order, Table } = require('./users');
 const moment = require('moment'); // Ensure the path to your User model is correct
-
+const path =require('path');
+const fs=require('fs')
+const multer=require('multer')
 const saltRounds = 10;
 
-router.get('/', (req, res) => {
-  res.render('index');
+
+router.get('/home', async (req, res) => {
+  try {
+    // Fetch distinct food categories and area categories from the Admin collection
+    const foodCategories = await Admin.distinct('FoodCategory');
+    const areaCategories = await Admin.distinct('AreaCategory');
+
+    // Prepare query based on selected food and area categories
+    const query = {};
+    if (req.query.foodCategory) {
+      query.FoodCategory = req.query.foodCategory;
+    }
+    if (req.query.areaCategory) {
+      query.AreaCategory = req.query.areaCategory;
+    }
+
+    // Fetch restaurants based on the query
+    const restaurants = await Admin.find(query);
+
+    res.render('home', {
+      foodCategories,
+      areaCategories,
+      restaurants
+    });
+  } catch (err) {
+    console.error(err);
+    res.status(500).send('Internal Server Error');
+  }
+});
+
+router.get('/',(req,res)=>{
+  res.render('index')
+})
+// Handle search requests
+router.get('/search', async (req, res) => {
+  try {
+    const { FoodCategory, AreaCategory } = req.query;
+
+    // Fetch distinct food categories and area categories for the form
+    const foodCategories = await Admin.distinct('FoodCategory');
+    const areaCategories = await Admin.distinct('AreaCategory');
+
+    // Find restaurants based on the selected food category and area category
+    const filter = {};
+    if (FoodCategory) filter.FoodCategory = FoodCategory;
+    if (AreaCategory) filter.AreaCategory = AreaCategory;
+
+    const restaurants = await Admin.find(filter);
+
+    res.render('home', {
+      foodCategories,
+      areaCategories,
+      restaurants
+    });
+  } catch (err) {
+    console.error(err);
+    res.status(500).send('Internal Server Error');
+  }
 });
 router.get('/rahul', (req, res) => {
   res.render('rahul');
@@ -209,6 +267,80 @@ router.post('/delete-order', async (req, res) => {
   } catch (error) {
     console.error('Error deleting order:', error);
     res.status(500).json({ message: 'Error deleting order', error });
+  }
+});
+router.get('/register', (req, res) => {
+  res.render('register');
+});
+
+// Handle the registration form submission
+const uploadDir = path.join(__dirname, '..', 'uploads');
+if (!fs.existsSync(uploadDir)) {
+  fs.mkdirSync(uploadDir, { recursive: true });
+}
+
+// Set up multer for file uploads
+
+// Directory to save uploaded files
+
+const storage = multer.diskStorage({
+    destination: function(req, file, cb) {
+        cb(null, uploadDir);
+    },
+    filename: function(req, file, cb) {
+        cb(null, Date.now() + path.extname(file.originalname));
+    }
+});
+const upload = multer({ storage: storage });
+
+// Register route
+router.post('/register', upload.single('image'), async (req, res) => {
+    try {
+        const { adminName, password, Res, Address, FoodCategory, AreaCategory } = req.body;
+        const image = req.file.path;
+
+        const newAdmin = new Admin({
+            adminName,
+            password,
+            Res,
+            Address,
+            FoodCategory,
+            AreaCategory,
+            image
+        });
+
+        await newAdmin.save();
+
+        res.redirect('/'); // Redirect to home page or wherever needed after successful registration
+    } catch (err) {
+        console.error(err);
+        res.render('register', { errorMessage: 'Failed to register. Please try again.' }); // Render the registration page with an error message
+    }
+});
+
+
+// Register route
+router.post('/register', upload.single('image'), async (req, res) => {
+  try {
+    const { adminName, password, Res, Address, FoodCategory, AreaCategory } = req.body;
+    const image = req.file.path; // Path to the uploaded image
+
+    const newAdmin = new Admin({
+      adminName,
+      password,
+      Res,
+      Address,
+      FoodCategory,
+      AreaCategory,
+      image
+    });
+
+    await newAdmin.save();
+
+    res.redirect('/');
+  } catch (err) {
+    console.error(err);
+    res.status(500).send('Internal Server Error');
   }
 });
 

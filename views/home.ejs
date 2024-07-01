@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Home Page</title>
+</head>
+<body>
+  <h1>Welcome to the Restaurant Finder</h1>
+  
+  <form action="/home" method="GET">
+    <label for="foodCategory">Select Food Category:</label>
+    <select id="foodCategory" name="foodCategory">
+      <option value="">All</option>
+      <% foodCategories.forEach(category => { %>
+        <option value="<%= category %>"><%= category %></option>
+      <% }); %>
+    </select>
+
+    <label for="areaCategory">Select Area Category:</label>
+    <select id="areaCategory" name="areaCategory">
+      <option value="">All</option>
+      <% areaCategories.forEach(category => { %>
+        <option value="<%= category %>"><%= category %></option>
+      <% }); %>
+    </select>
+
+    <button type="submit">Filter</button>
+  </form>
+
+  <h2>Restaurants:</h2>
+  <ul>
+    <% restaurants.forEach(restaurant => { %>
+      <li>
+        <h3><%= restaurant.Res %></h3>
+        <p><strong>Food Category:</strong> <%= restaurant.FoodCategory %></p>
+        <p><strong>Area Category:</strong> <%= restaurant.AreaCategory %></p>
+        <img src="<%= restaurant.image %>" alt="Restaurant Image" style="max-width: 200px;">
+      </li>
+    <% }); %>
+  </ul>
+</body>
+</html>

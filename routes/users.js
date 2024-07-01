@@ -24,6 +24,8 @@ const userSchema = new mongoose.Schema({
 });
 
 // Define the Admin schema
+
+
 const adminSchema = new mongoose.Schema({
   adminName: {
     type: String,
@@ -32,6 +34,57 @@ const adminSchema = new mongoose.Schema({
   },
   password: {
     type: String,
+    required: true
+  },
+  Res: {
+    type: String,
+    required: true
+  },
+  Address: {
+    type: String,
+    required: true
+  },
+  FoodCategory: { 
+    type: String, 
+    required: true, 
+    enum: [
+      'Italian',
+      'Chinese',
+      'Japanese',
+      'Indian',
+      'Mexican',
+      'French',
+      'Thai',
+      'Mediterranean',
+      'American',
+      'Greek'
+    ]
+  },
+  AreaCategory: { 
+    type: String, 
+    required: true, 
+    enum: [
+      'Belagaum',
+      'Khanapur',
+      'Bagalkote',
+      'Benguluru',
+      'Kodchi',
+      'Goa',
+      'Pune',
+      'Kakati',
+      'Shiroli',
+      'Ballari',
+      'Mandya',
+      'Bidar',
+      'Chickmangaluru',
+      'Davangere',
+      'Gadag',
+      'Hubli',
+      'Dharwad',
+    ]
+  },
+  image: {
+    type: String, // URL or path to the image
     required: true
   }
 });
@@ -62,5 +115,6 @@ const User = mongoose.model('User', userSchema);
 const Admin = mongoose.model('Admin', adminSchema);
 const Order = mongoose.model('Order', orderSchema);
 const Table = mongoose.model('Table', tableSchema);
+
 
 module.exports = { User, Admin, Order, Table };

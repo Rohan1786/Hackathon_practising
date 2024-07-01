@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Search Restaurants</title>
+</head>
+<body>
+    <h1>Search Restaurants</h1>
+
+    <form action="/search" method="GET">
+        <!-- <label for="FoodCategory">Food Category:</label>
+        <select id="FoodCategory" name="FoodCategory">
+            <option value="">Select a food category</option>
+            <% foodCategories.forEach(category => { %>
+                <option value="<%= category %>"><%= category %></option>
+            <% }); %>
+        </select><br><br> -->
+
+        <label for="AreaCategory">Area Category:</label>
+        <select id="AreaCategory" name="AreaCategory">
+            <option value="">Select an area category</option>
+            <% areaCategories.forEach(area => { %>
+                <option value="<%= area %>"><%= area %></option>
+            <% }); %>
+        </select><br><br>
+
+        <button type="submit">Search</button>
+    </form>
+
+    <% if (restaurants.length > 0) { %>
+        <h2>Search Results</h2>
+        <ul>
+            <% restaurants.forEach(restaurant => { %>
+                <li>
+                    <strong>Name:</strong> <%= restaurant.Res %> <br>
+                    <strong>Address:</strong> <%= restaurant.Address %> <br>
+                    <strong>Food Category:</strong> <%= restaurant.FoodCategory %> <br>
+                    <strong>Area Category:</strong> <%= restaurant.AreaCategory %> <br>
+                    <img src="<%= restaurant.image %>" alt="Restaurant Image" style="max-width: 200px;">
+                </li>
+            <% }); %>
+        </ul>
+    <% } else if (restaurants.length === 0 && (req.query.FoodCategory || req.query.AreaCategory)) { %>
+        <h2>No Results Found</h2>
+    <% } %>
+</body>
+</html>
