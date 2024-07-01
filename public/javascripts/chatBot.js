@@ -52,3 +52,20 @@ function handleUserMessage() {
     }
 
     return response;
+}   
+
+
+const ball = document.querySelector(".ball")
+const chatCont = document.querySelector(".chat-container")
+ball.addEventListener("click", ()=>{
+    console.log("clicked")
+    if(chatCont.style.opacity === "1"){
+        chatCont.style.opacity = "0"
+        chatCont.style.display = "none"
+    }
+    else{
+        chatCont.style.opacity = "1"
+        chatCont.style.display = "block"
+    }
+    
+})
