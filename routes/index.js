@@ -8,13 +8,17 @@ const saltRounds = 10;
 router.get('/', (req, res) => {
   res.render('index');
 });
+router.get('/rahul', (req, res) => {
+  res.render('rahul');
+});
 
 router.post('/signup', async (req, res) => {
   try {
     const { username, email, password } = req.body;
     const existingUser = await User.findOne({ email });
     if (existingUser) {
-      return res.status(400).json({ message: 'Email already exists' });
+      req.flash('error', 'Email already exists');
+      return res.redirect('/signup');
     }
     const hashedPassword = await bcrypt.hash(password, saltRounds);
     const newUser = new User({ username, email, password: hashedPassword });
@@ -22,13 +26,44 @@ router.post('/signup', async (req, res) => {
     res.status(201).redirect('/login');
   } catch (error) {
     console.error('Error creating user:', error);
-    res.status(500).json({ message: 'Error creating user', error });
+    req.flash('error', 'Error creating user');
+    res.status(500).redirect('/signup');
   }
 });
 
-router.get('/signup', (req, res) => {
-  res.render('signup');
+// Login POST request
+router.post('/login', async (req, res) => {
+  try {
+    const { email, password } = req.body;
+    const existingUser = await User.findOne({ email });
+    if (!existingUser) {
+      req.flash('error', 'Invalid email or password');
+      return res.redirect('/login');
+    }
+    const passwordMatch = await bcrypt.compare(password, existingUser.password);
+    if (!passwordMatch) {
+      req.flash('error', 'Invalid email or password');
+      return res.redirect('/login');
+    }
+    req.session.user = { email };
+    res.redirect('/order');
+  } catch (error) {
+    console.error('Error logging in user:', error);
+    req.flash('error', 'Error logging in user');
+    res.status(500).redirect('/login');
+  }
 });
+
+// Render signup page
+router.get('/signup', (req, res) => {
+  res.render('signup', { messages: req.flash('error') });
+});
+
+// Render login page
+router.get('/login', (req, res) => {
+  res.render('login', { messages: req.flash('error') });
+});
+
 
 router.get('/login', (req, res) => {
   res.render('login');
