@@ -7,10 +7,263 @@
   <!-- Bootstrap CSS -->
   <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
   <link rel="stylesheet" href="/styles.css">
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #e3f2fd;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+    }
+
+    .signup-container {
+      background-color: #fff;
+      padding: 2rem;
+      border-radius: 10px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      max-width: 400px;
+      width: 100%;
+      text-align: center;
+      animation: fadeIn 1s ease-in-out;
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: scale(0.9);
+      }
+      to {
+        opacity: 1;
+        transform: scale(1);
+      }
+    }
+
+    h1 {
+      color: #333;
+      margin-bottom: 1rem;
+      animation: slideInFromLeft 0.5s ease-in-out;
+    }
+
+    .form-group {
+      margin-bottom: 1.5rem;
+      animation: slideInFromRight 0.5s ease-in-out;
+    }
+
+    @keyframes slideInFromLeft {
+      from {
+        transform: translateX(-100%);
+        opacity: 0;
+      }
+      to {
+        transform: translateX(0);
+        opacity: 1;
+      }
+    }
+
+    @keyframes slideInFromRight {
+      from {
+        transform: translateX(100%);
+        opacity: 0;
+      }
+      to {
+        transform: translateX(0);
+        opacity: 1;
+      }
+    }
+
+    label {
+      color: #555;
+    }
+
+    input[type="text"],
+    input[type="password"],
+    input[type="email"] {
+      padding: 0.75rem;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      transition: border-color 0.3s, box-shadow 0.3s;
+    }
+
+    input[type="text"]:focus,
+    input[type="password"]:focus,
+    input[type="email"]:focus {
+      border-color: #4caf50;
+      box-shadow: 0 0 8px rgba(76, 175, 80, 0.6);
+    }
+
+    button {
+      width: 100%;
+      padding: 0.75rem;
+      background-color: #4caf50;
+      border: none;
+      border-radius: 5px;
+      color: #fff;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: background-color 0.3s, transform 0.3s;
+    }
+
+    button:hover {
+      background-color: #388e3c;
+      transform: scale(1.05);
+    }
+
+    .alert {
+      margin-bottom: 1.5rem;
+      animation: fadeIn 0.5s ease-in-out;
+    }
+
+    @media (max-width: 600px) {
+      .signup-container {
+        padding: 1rem;
+      }
+    }
+
+    .container {
+      max-width: 350px;
+      background: #F8F9FD;
+      background: linear-gradient(0deg, rgb(255, 255, 255) 0%, rgb(244, 247, 251) 100%);
+      border-radius: 40px;
+      padding: 25px 35px;
+      border: 5px solid rgb(255, 255, 255);
+      box-shadow: rgba(133, 189, 215, 0.8784313725) 0px 30px 30px -20px;
+      margin: 20px;
+    }
+
+    .heading {
+      text-align: center;
+      font-weight: 900;
+      font-size: 30px;
+      color: rgb(16, 137, 211);
+    }
+
+    .form {
+      margin-top: 20px;
+    }
+
+    .form .input {
+      width: 100%;
+      background: white;
+      border: none;
+      padding: 15px 20px;
+      border-radius: 20px;
+      margin-top: 15px;
+      box-shadow: #cff0ff 0px 10px 10px -5px;
+      border-inline: 2px solid transparent;
+    }
+
+    .form .input::-moz-placeholder {
+      color: rgb(170, 170, 170);
+    }
+
+    .form .input::placeholder {
+      color: rgb(170, 170, 170);
+    }
+
+    .form .input:focus {
+      outline: none;
+      border-inline: 2px solid #12B1D1;
+    }
+
+    .form .forgot-password {
+      display: block;
+      margin-top: 10px;
+      margin-left: 10px;
+    }
+
+    .form .forgot-password a {
+      font-size: 11px;
+      color: #0099ff;
+      text-decoration: none;
+    }
+
+    .form .login-button {
+      display: block;
+      width: 100%;
+      font-weight: bold;
+      background: linear-gradient(45deg, rgb(16, 137, 211) 0%, rgb(18, 177, 209) 100%);
+      color: white;
+      padding-block: 15px;
+      margin: 20px auto;
+      border-radius: 20px;
+      box-shadow: rgba(133, 189, 215, 0.8784313725) 0px 20px 10px -15px;
+      border: none;
+      transition: all 0.2s ease-in-out;
+    }
+
+    .form .login-button:hover {
+      transform: scale(1.03);
+      box-shadow: rgba(133, 189, 215, 0.8784313725) 0px 23px 10px -20px;
+    }
+
+    .form .login-button:active {
+      transform: scale(0.95);
+      box-shadow: rgba(133, 189, 215, 0.8784313725) 0px 15px 10px -10px;
+    }
+
+    .social-account-container {
+      margin-top: 25px;
+    }
+
+    .social-account-container .title {
+      display: block;
+      text-align: center;
+      font-size: 10px;
+      color: rgb(170, 170, 170);
+    }
+
+    .social-account-container .social-accounts {
+      width: 100%;
+      display: flex;
+      justify-content: center;
+      gap: 15px;
+      margin-top: 5px;
+    }
+
+    .social-account-container .social-accounts .social-button {
+      background: linear-gradient(45deg, rgb(0, 0, 0) 0%, rgb(112, 112, 112) 100%);
+      border: 5px solid white;
+      padding: 5px;
+      border-radius: 50%;
+      width: 40px;
+      aspect-ratio: 1;
+      display: grid;
+      place-content: center;
+      box-shadow: rgba(133, 189, 215, 0.8784313725) 0px 12px 10px -8px;
+      transition: all 0.2s ease-in-out;
+    }
+
+    .social-account-container .social-accounts .social-button .svg {
+      fill: white;
+      margin: auto;
+    }
+
+    .social-account-container .social-accounts .social-button:hover {
+      transform: scale(1.2);
+    }
+
+    .social-account-container .social-accounts .social-button:active {
+      transform: scale(0.9);
+    }
+
+    .agreement {
+      display: block;
+      text-align: center;
+      margin-top: 15px;
+    }
+
+    .agreement a {
+      text-decoration: none;
+      color: #0099ff;
+      font-size: 9px;
+    }
+  </style>
 </head>
 <body>
-  <div class="signup-container">
-    <h1>Signup</h1>
+  <div class="container">
+    <h1 class="heading">Signup</h1>
 
     <% if (messages.length > 0) { %>
       <% messages.forEach(function(message) { %>
@@ -19,165 +272,47 @@
         </div>
       <% }) %>
     <% } %>
-    <!DOCTYPE html>
-    <html lang="en">
-    <head>
-      <meta charset="UTF-8">
-      <meta name="viewport" content="width=device-width, initial-scale=1.0">
-      <title>Signup</title>
-      <!-- Bootstrap CSS -->
-      <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
-      <link rel="stylesheet" href="/styles.css">
-      <style>
-        body {
-          font-family: Arial, sans-serif;
-          background-color: #e3f2fd;
-          display: flex;
-          justify-content: center;
-          align-items: center;
-          height: 100vh;
-          margin: 0;
-        }
-    
-        .signup-container {
-          background-color: #fff;
-          padding: 2rem;
-          border-radius: 10px;
-          box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-          max-width: 400px;
-          width: 100%;
-          text-align: center;
-          animation: fadeIn 1s ease-in-out;
-        }
-    
-        @keyframes fadeIn {
-          from {
-            opacity: 0;
-            transform: scale(0.9);
-          }
-          to {
-            opacity: 1;
-            transform: scale(1);
-          }
-        }
-    
-        h1 {
-          color: #333;
-          margin-bottom: 1rem;
-          animation: slideInFromLeft 0.5s ease-in-out;
-        }
-    
-        .form-group {
-          margin-bottom: 1.5rem;
-          animation: slideInFromRight 0.5s ease-in-out;
-        }
-    
-        @keyframes slideInFromLeft {
-          from {
-            transform: translateX(-100%);
-            opacity: 0;
-          }
-          to {
-            transform: translateX(0);
-            opacity: 1;
-          }
-        }
-    
-        @keyframes slideInFromRight {
-          from {
-            transform: translateX(100%);
-            opacity: 0;
-          }
-          to {
-            transform: translateX(0);
-            opacity: 1;
-          }
-        }
-    
-        label {
-          color: #555;
-        }
-    
-        input[type="text"],
-        input[type="password"],
-        input[type="email"] {
-          padding: 0.75rem;
-          border: 1px solid #ccc;
-          border-radius: 5px;
-          transition: border-color 0.3s, box-shadow 0.3s;
-        }
-    
-        input[type="text"]:focus,
-        input[type="password"]:focus,
-        input[type="email"]:focus {
-          border-color: #4caf50;
-          box-shadow: 0 0 8px rgba(76, 175, 80, 0.6);
-        }
-    
-        button {
-          width: 100%;
-          padding: 0.75rem;
-          background-color: #4caf50;
-          border: none;
-          border-radius: 5px;
-          color: #fff;
-          font-size: 1rem;
-          cursor: pointer;
-          transition: background-color 0.3s, transform 0.3s;
-        }
-    
-        button:hover {
-          background-color: #388e3c;
-          transform: scale(1.05);
-        }
-    
-        .alert {
-          margin-bottom: 1.5rem;
-          animation: fadeIn 0.5s ease-in-out;
-        }
-    
-        @media (max-width: 600px) {
-          .signup-container {
-            padding: 1rem;
-          }
-        }
-      </style>
-    </head>
-    <body>
-      <div class="signup-container">
-      
-    
-        <% if (messages.length > 0) { %>
-          <% messages.forEach(function(message) { %>
-            <div class="alert alert-danger" role="alert">
-              <%= message %>
-            </div>
-          <% }) %>
-        <% } %>
-    
-        <form action="/signup" method="POST">
-          <div class="form-group">
-            <label for="username">Username:</label>
-            <input type="text" class="form-control" id="username" name="username" required>
-          </div>
-          <div class="form-group">
-            <label for="email">Email:</label>
-            <input type="email" class="form-control" id="email" name="email" required>
-          </div>
-          <div class="form-group">
-            <label for="password">Password:</label>
-            <input type="password" class="form-control" id="password" name="password" required>
-          </div>
-          <div>
-            <button type="submit" class="btn btn-success">Signup</button>
-          </div>
-        </form>
+
+    <form action="/signup" method="POST" class="form">
+      <div class="form-group">
+        <label for="username">Username:</label>
+        <input type="text" class="form-control input" id="username" name="username" required>
       </div>
-    
-      <!-- Bootstrap JS and dependencies -->
-      <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-      <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
-      <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-    </body>
-    </html>
-    
+      <div class="form-group">
+        <label for="email">Email:</label>
+        <input type="email" class="form-control input" id="email" name="email" required>
+      </div>
+      <div class="form-group">
+        <label for="password">Password:</label>
+        <input type="password" class="form-control input" id="password" name="password" required>
+      </div>
+      <div>
+        <button type="submit" class="btn btn-success login-button">Signup</button>
+      </div>
+    </form>
+    <div class="social-account-container">
+      <span class="title">Or sign up with</span>
+      <div class="social-accounts">
+        <button class="social-button">
+          <svg class="svg" width="20" height="20">
+            <circle cx="10" cy="10" r="10" />
+          </svg>
+        </button>
+        <button class="social-button">
+          <svg class="svg" width="20" height="20">
+            <circle cx="10" cy="10" r="10" />
+          </svg>
+        </button>
+      </div>
+    </div>
+    <div class="agreement">
+      <a href="#">By signing up, you agree to our terms and conditions</a>
+    </div>
+  </div>
+
+  <!-- Bootstrap JS and dependencies -->
+  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

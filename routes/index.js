@@ -1,7 +1,8 @@
 const express = require('express');
 const router = express.Router();
 const bcrypt = require('bcrypt');
-const { User, Admin, Order, Table } = require('./users'); // Ensure the path to your User model is correct
+const { User, Admin, Order, Table } = require('./users');
+const moment = require('moment'); // Ensure the path to your User model is correct
 
 const saltRounds = 10;
 
@@ -11,7 +12,9 @@ router.get('/', (req, res) => {
 router.get('/rahul', (req, res) => {
   res.render('rahul');
 });
-
+router.get('/admin-register', (req, res) => {
+  res.render('admin-register');
+});
 router.post('/signup', async (req, res) => {
   try {
     const { username, email, password } = req.body;
@@ -31,7 +34,6 @@ router.post('/signup', async (req, res) => {
   }
 });
 
-// Login POST request
 router.post('/login', async (req, res) => {
   try {
     const { email, password } = req.body;
@@ -65,9 +67,7 @@ router.get('/login', (req, res) => {
 });
 
 
-router.get('/login', (req, res) => {
-  res.render('login');
-});
+
 
 router.post('/order', async (req, res) => {
   try {
@@ -163,9 +163,30 @@ router.get('/admin', isAuthenticated, (req, res) => {
   res.render('admin');
 });
 
-router.get('/admin-dashboard', (req, res) => {
-  res.render('admin-dashboard');
+router.get('/admin-dashboard', async (req, res) => {
+  try {
+    // Fetch all orders
+    const orders = await Order.find();
+
+    // Aggregate data to get the number of users who ordered at each time slot
+    const orderStatistics = orders.reduce((acc, order) => {
+      const key = `${order.date}-${order.hours}`;
+      if (!acc[key]) {
+        acc[key] = { count: 0, orders: [] };
+      }
+      acc[key].count += 1;
+      acc[key].orders.push(order);
+      return acc;
+    }, {});
+
+    // Render the admin dashboard with the aggregated data
+    res.render('admin-dashboard', { orderStatistics });
+  } catch (error) {
+    console.error('Error fetching orders:', error);
+    res.status(500).json({ success: false, message: 'An error occurred while fetching the orders' });
+  }
 });
+
 
 router.post('/add-table', async (req, res) => {
   try {
@@ -191,6 +212,9 @@ router.post('/update-table', async (req, res) => {
 });
 router.get('/hi',(req,res)=>{
   res.render('chatbot')
-})
+});
+
+
+
 
 module.exports = router;
