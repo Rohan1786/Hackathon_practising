@@ -189,5 +189,8 @@ router.post('/update-table', async (req, res) => {
     res.status(500).json({ message: 'Error updating table', error });
   }
 });
+router.get('/hi',(req,res)=>{
+  res.render('chatbot')
+})
 
 module.exports = router;
