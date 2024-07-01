@@ -6,6 +6,8 @@
   <title>Practising</title>
   <!-- Bootstrap CSS -->
   <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css"/>
+  <script src="/javascripts/rahul.js"></script>
   <style>
     body {
       font-family: Arial, sans-serif;
@@ -59,9 +61,38 @@
     a.btn:hover {
       background-color: #0056b3;
     }
+
+
+
+    body {
+  background-color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  margin: 0;
+}
+
+.content {
+  text-align: center; 
+  position: absolute;
+  top: 40%;
+  left: 20%;
+}
+
+.myimg {
+  cursor: pointer;
+}
   </style>
 </head>
 <body>
+
+
+  <div class="content">
+    <img id="robotImage" class="myimg" src="/images/robosgbit.gif" width="150em" onclick="activateBot()">
+  </div>
+
+
   <div class="container">
     <h1>Hello</h1>
     <p>Welcome to the web</p>
