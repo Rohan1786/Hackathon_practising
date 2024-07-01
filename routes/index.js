@@ -344,6 +344,9 @@ router.post('/register', upload.single('image'), async (req, res) => {
   }
 });
 
-
+//for payment 
+router.get('/pay',(req,res)=>{
+  res.render('pay')
+})
 
 module.exports = router;
