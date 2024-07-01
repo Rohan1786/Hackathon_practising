@@ -59,7 +59,7 @@
     <% if (typeof error !== 'undefined') { %>
       <div class="error"><%= error %></div>
     <% } %>
-    <form action="/admin" method="POST">
+    <form action="/admin-login" method="POST">
       <input type="text" name="adminName" placeholder="Admin Name" required>
       <input type="password" name="password" placeholder="Password" required>
       <button type="submit">Login</button>

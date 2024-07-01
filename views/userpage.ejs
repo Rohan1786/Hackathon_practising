@@ -1,16 +1,27 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>User Page</title>
+  <link rel="stylesheet" href="/path/to/your/styles.css">
 </head>
 <body>
-  <h1>Welcome, <%= order.username %></h1>
-  <p>Your order details:</p>
-  <ul>
-    <li>Date: <%= order.date %></li>
-    <li>Phone Number: <%= order.phoneNumber %></li>
-    <li>Email: <%= order.email %></li>
-    <li>Payment Method: <%= order.paymentMethod %></li>
-  </ul>
+  <div class="container">
+    <h1>Welcome, <%= order.username %></h1>
+    <h2>Your Order Details</h2>
+    <p>Date: <%= order.date.toDateString() %></p>
+    <p>Hours: <%= order.hours %></p>
+    <p>Phone Number: <%= order.phoneNumber %></p>
+    <p>Email: <%= order.email %></p>
+    <p>Payment Method: <%= order.paymentMethod %></p>
+
+    <h2>Available Tables</h2>
+    <ul>
+      <% tables.forEach(table => { %>
+        <li>Table Number: <%= table.tableNumber %> - <%= table.available ? 'Available' : 'Not Available' %></li>
+      <% }) %>
+    </ul>
+  </div>
 </body>
 </html>

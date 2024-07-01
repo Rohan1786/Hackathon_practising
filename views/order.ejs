@@ -1,31 +1,45 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Place Order</title>
+  <link rel="stylesheet" href="/path/to/your/styles.css">
 </head>
 <body>
-  <h1>Place Your Order</h1>
-  <form action="/order" method="POST">
-    <label for="username">Username:</label>
-    <input type="text" id="username" name="username" required><br><br>
-    
-    <label for="date">Date:</label>
-    <input type="date" id="date" name="date" required><br><br>
-    
-    <label for="phoneNumber">Phone Number:</label>
-    <input type="text" id="phoneNumber" name="phoneNumber" required><br><br>
-    
-    <label for="email">Email:</label>
-    <input type="email" id="email" name="email" required><br><br>
-    
-    <label for="paymentMethod">Payment Method:</label>
-    <select id="paymentMethod" name="paymentMethod" required>
-      <option value="Credit Card">Credit Card</option>
-      <option value="Debit Card">Debit Card</option>
-      <option value="PayPal">PayPal</option>
-    </select><br><br>
-    
-    <button type="submit">Submit Order</button>
-  </form>
+  <div class="container">
+    <h1>Place Your Order</h1>
+    <form action="/order" method="POST">
+      <div class="form-group">
+        <label for="username">Username:</label>
+        <input type="text" id="username" name="username" required>
+      </div>
+      <div class="form-group">
+        <label for="date">Date:</label>
+        <input type="date" id="date" name="date" required>
+      </div>
+      <div class="form-group">
+        <label for="hours">Hours:</label>
+        <input type="number" id="hours" name="hours" required>
+      </div>
+      <div class="form-group">
+        <label for="phoneNumber">Phone Number:</label>
+        <input type="text" id="phoneNumber" name="phoneNumber" required>
+      </div>
+      <div class="form-group">
+        <label for="email">Email:</label>
+        <input type="email" id="email" name="email" required>
+      </div>
+      <div class="form-group">
+        <label for="paymentMethod">Payment Method:</label>
+        <select id="paymentMethod" name="paymentMethod" required>
+          <option value="Credit Card">Credit Card</option>
+          <option value="Debit Card">Debit Card</option>
+          <option value="PayPal">PayPal</option>
+        </select>
+      </div>
+      <button type="submit">Place Order</button>
+    </form>
+  </div>
 </body>
 </html>
