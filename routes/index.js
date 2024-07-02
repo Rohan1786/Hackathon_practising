@@ -348,5 +348,134 @@ router.post('/register', upload.single('image'), async (req, res) => {
 router.get('/pay',(req,res)=>{
   res.render('pay')
 })
+router.get('/choose-tables', async (req, res) => {
+  try {
+    const tables = await Table.find();
+    res.render('choose', { tables });
+  } catch (error) {
+    console.error('Error fetching tables:', error);
+    res.status(500).send('Internal Server Error');
+  }
+});
+
+// Route to handle table selection
+router.post('/choose-tables', async (req, res) => {
+  try {
+    const selectedTables = req.body.tables; // Array of selected table numbers
+    console.log('Selected tables:', selectedTables);
+    // Handle the selected tables as needed
+    res.redirect('/choose-tables');
+  } catch (error) {
+    console.error('Error handling table selection:', error);
+    res.status(500).send('Internal Server Error');
+  }
+});
+//for checking and creating tables 
+router.get('/seats', async (req, res) => {
+  try {
+    const seats = await Seat.find().sort({ seatNumber: 1 });
+    res.render('choose', { seats });
+  } catch (error) {
+    console.error('Error fetching seats:', error);
+    res.status(500).send('Internal Server Error');
+  }
+});
+
+// Route to add a new seat (Admin only)
+router.post('/add-seat', async (req, res) => {
+  try {
+    const { seatNumber, status, price } = req.body;
+    const newSeat = new Seat({ seatNumber, status, price });
+    await newSeat.save();
+    res.redirect('/admin-dashboard');
+  } catch (error) {
+    console.error('Error adding seat:', error);
+    res.status(500).json({ message: 'Error adding seat', error });
+  }
+});
+
+// Route to update seat status (Admin only)
+router.post('/update-seat', async (req, res) => {
+  try {
+    const { seatNumber, status } = req.body;
+    await Seat.updateOne({ seatNumber }, { status });
+    res.redirect('/admin-dashboard');
+  } catch (error) {
+    console.error('Error updating seat:', error);
+    res.status(500).json({ message: 'Error updating seat', error });
+  }
+});
+
+// Route to book a seat (User)
+router.post('/book-seat', async (req, res) => {
+  try {
+    const { seatNumbers } = req.body;
+    await Seat.updateMany({ seatNumber: { $in: seatNumbers } }, { status: 'booked' });
+    res.redirect('/seats');
+  } catch (error) {
+    console.error('Error booking seat:', error);
+    res.status(500).json({ message: 'Error booking seat', error });
+  }
+});
+
+
+// Route to serve the add-seat form
+router.get('/add-seat', (req, res) => {
+  res.sendFile(path.join(__dirname));
+});
+router.post('/add-seat', async (req, res) => {
+  const { seatNumber, isBooked } = req.body;
+
+  // Validate the input
+  if (typeof seatNumber !== 'number' || typeof isBooked !== 'boolean') {
+    return res.status(400).send('Invalid input data');
+  }
+
+  const newSeat = new Seat({
+    seatNumber,
+    isBooked,
+  });
+
+  try {
+    await newSeat.save();
+    res.status(201).send('Seat added successfully');
+  } catch (error) {
+    console.error('Error adding seat:', error);
+    res.status(500).send('Error adding seat');
+  }
+});
+router.get('/profile', async (req, res) => {
+  try {
+    // Fetch order records grouped by username
+    const orderRecords = await Order.aggregate([
+      {
+        $group: {
+          _id: "$username",
+          count: { $sum: 1 }
+        }
+      },
+      {
+        $lookup: {
+          from: "users",
+          localField: "_id",
+          foreignField: "username",
+          as: "userDetails"
+        }
+      },
+      {
+        $project: {
+          username: "$_id",
+          count: 1,
+          _id: 0
+        }
+      }
+    ]);
+
+    res.render('profile', { orderRecords });
+  } catch (error) {
+    console.error('Error fetching order records:', error);
+    res.status(500).send('Error fetching order records');
+  }
+});
 
 module.exports = router;

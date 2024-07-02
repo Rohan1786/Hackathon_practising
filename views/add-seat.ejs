@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Add New Seat</title>
+    <script>
+      async function addSeat(event) {
+        event.preventDefault();
+
+        const seatNumber = parseInt(document.getElementById('seatNumber').value);
+        const isBooked = document.getElementById('isBooked').checked;
+
+        try {
+          const response = await fetch('/add-seat', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ seatNumber, isBooked }),
+          });
+
+          if (response.ok) {
+            alert('Seat added successfully');
+            document.getElementById('seatForm').reset();
+          } else {
+            alert('Error adding seat');
+          }
+        } catch (error) {
+          console.error('Error adding seat:', error);
+        }
+      }
+    </script>
+  </head>
+  <body>
+    <h1>Add New Seat</h1>
+    <form id="seatForm" onsubmit="addSeat(event)">
+      <label for="seatNumber">Seat Number:</label>
+      <input type="number" id="seatNumber" name="seatNumber" required /><br /><br />
+      <label for="isBooked">Is Booked:</label>
+      <input type="checkbox" id="isBooked" name="isBooked" /><br /><br />
+      <button type="submit">Add Seat</button>
+    </form>
+  </body>
+</html>

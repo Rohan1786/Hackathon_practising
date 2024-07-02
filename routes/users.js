@@ -108,7 +108,13 @@ const tableSchema = new mongoose.Schema({
   tableNumber: { type: Number, required: true, unique: true },
   available: { type: Boolean, default: true }
 });
+const seatSchema = new mongoose.Schema({
+  seatNumber: { type: Number, required: true, unique: true },
+  status: { type: String, enum: ['available', 'booked'], default: 'available' },
+  price: { type: Number, default: 200 }
+});
 
+const Seat = mongoose.model('Seat', seatSchema);
 orderSchema.index({ username: 1, date: 1, hours: 1 }, { unique: true });
 
 const User = mongoose.model('User', userSchema);
@@ -117,4 +123,4 @@ const Order = mongoose.model('Order', orderSchema);
 const Table = mongoose.model('Table', tableSchema);
 
 
-module.exports = { User, Admin, Order, Table };
+module.exports = { User, Admin, Order, Table,Seat };
