@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tables</title>
+</head>
+<body>
+  <h1>Table Availability</h1>
+  <table border="1">
+    <tr>
+      <th>Table Number</th>
+      <th>Capacity</th>
+      <th>Availability</th>
+    </tr>
+    <% tables.forEach(table => { %>
+      <tr>
+        <td><%= table.tableNumber %></td>
+        <td><%= table.capacity %></td>
+        <td><%= table.isAvailable ? 'Available' : 'Booked' %></td>
+      </tr>
+    <% }); %>
+  </table>
+
+  <h2>Book a Table</h2>
+  <form action="/book-table" method="post">
+    <label for="username">Username:</label>
+    <input type="text" id="username" name="username" required><br>
+
+    <label for="tableNumber">Table Number:</label>
+    <input type="number" id="tableNumber" name="tableNumber" required><br>
+
+    <label for="bookingDate">Booking Date:</label>
+    <input type="date" id="bookingDate" name="bookingDate" required><br>
+
+    <label for="bookingTime">Booking Time:</label>
+    <input type="time" id="bookingTime" name="bookingTime" required><br>
+
+    <button type="submit">Book Table</button>
+  </form>
+</body>
+</html>

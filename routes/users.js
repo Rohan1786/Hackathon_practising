@@ -106,8 +106,20 @@ const orderSchema = new mongoose.Schema({
 // Define the Table schema
 const tableSchema = new mongoose.Schema({
   tableNumber: { type: Number, required: true, unique: true },
-  available: { type: Boolean, default: true }
+  capacity: { type: Number, required: true },
+  isAvailable: { type: Boolean, default: true },
 });
+
+const bookingSchema = new mongoose.Schema({
+  username: { type: String, required: true },
+  tableNumber: { type: Number, required: true },
+  bookingDate: { type: Date, required: true },
+  bookingTime: { type: String, required: true },
+});
+
+const Booking = mongoose.model('Booking', bookingSchema);
+
+
 const seatSchema = new mongoose.Schema({
   seatNumber: { type: Number, required: true, unique: true },
   status: { type: String, enum: ['available', 'booked'], default: 'available' },
@@ -123,4 +135,4 @@ const Order = mongoose.model('Order', orderSchema);
 const Table = mongoose.model('Table', tableSchema);
 
 
-module.exports = { User, Admin, Order, Table,Seat };
+module.exports = { User, Admin, Order, Table,Seat,Booking};

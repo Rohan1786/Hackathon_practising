@@ -4,26 +4,162 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Search Restaurants</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f4f4f4;
+        }
+        
+        h1, h2 {
+            text-align: center;
+            color: #333;
+        }
+
+        form {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+            background: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+        }
+
+        select, button {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 20px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            font-size: 16px;
+        }
+
+        button {
+            background-color: #28a745;
+            color: white;
+            border: none;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        button:hover {
+            background-color: #218838;
+        }
+
+        ul {
+            list-style: none;
+            padding: 0;
+            max-width: 100%;
+            margin: 20px auto;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        li {
+            margin: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+        }
+
+        .card {
+            width: 250px; /* Adjusted width for larger screens */
+            height: 470px; /* Increased height */
+            padding: 10px; /* Adjusted padding */
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+            background: #fff; /* Added background */
+            border-radius: 8px;
+            transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+        }
+
+        .card-img {
+            background-color: #ffcaa6;
+            height: 40%;
+            width: 100%;
+            border-radius: 8px 8px 0 0; /* Rounded top corners */
+            transition: .3s ease;
+        }
+
+        .card-info {
+            padding: 10px;
+        }
+
+        .text-title {
+            font-weight: 900;
+            font-size: 1.2em;
+            line-height: 1.5;
+            margin-bottom: 10px;
+        }
+
+        .text-body {
+            font-size: .9em;
+            line-height: 1.5;
+        }
+
+        .card-footer {
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-top: 10px;
+            border-top: 1px solid #ddd;
+            margin-top: auto; /* Push footer to the bottom */
+        }
+
+        .card-button {
+            border: 1px solid #252525;
+            display: inline-block;
+            padding: .5em 1em;
+            cursor: pointer;
+            border-radius: 50px;
+            transition: .3s ease-in-out;
+            background-color: #252525;
+            color: #fff;
+            text-decoration: none;
+            text-align: center;
+            margin-top: 10px;
+            width: 100%; /* Full width button */
+        }
+
+        .card-button:hover {
+            background-color: #ffcaa6;
+            color: #252525;
+        }
+
+        /* Responsive adjustments */
+        @media screen and (max-width: 768px) {
+            .card {
+                width: 100%; /* Full width on smaller screens */
+                max-width: 300px; /* Limit width for readability */
+            }
+        }
+    </style>
 </head>
 <body>
     <h1>Search Restaurants</h1>
 
     <form action="/search" method="GET">
-        <!-- <label for="FoodCategory">Food Category:</label>
-        <select id="FoodCategory" name="FoodCategory">
-            <option value="">Select a food category</option>
-            <% foodCategories.forEach(category => { %>
-                <option value="<%= category %>"><%= category %></option>
-            <% }); %>
-        </select><br><br> -->
-
         <label for="AreaCategory">Area Category:</label>
         <select id="AreaCategory" name="AreaCategory">
             <option value="">Select an area category</option>
             <% areaCategories.forEach(area => { %>
                 <option value="<%= area %>"><%= area %></option>
             <% }); %>
-        </select><br><br>
+        </select>
 
         <button type="submit">Search</button>
     </form>
@@ -33,16 +169,23 @@
         <ul>
             <% restaurants.forEach(restaurant => { %>
                 <li>
-                    <strong>Name:</strong> <%= restaurant.Res %> <br>
-                    <strong>Address:</strong> <%= restaurant.Address %> <br>
-                    <strong>Food Category:</strong> <%= restaurant.FoodCategory %> <br>
-                    <strong>Area Category:</strong> <%= restaurant.AreaCategory %> <br>
-                    <img src="<%= restaurant.image %>" alt="Restaurant Image" style="max-width: 200px;">
+                    <div class="card">
+                        <div class="card-img" style="background-image: url('<%= restaurant.image %>');"></div>
+                        <div class="card-info">
+                            <div class="text-title"><%= restaurant.Res %></div>
+                            <div class="text-body">
+                                <strong>Address:</strong> <%= restaurant.Address %> <br>
+                                <strong>Food Category:</strong> <%= restaurant.FoodCategory %> <br>
+                                <strong>Area Category:</strong> <%= restaurant.AreaCategory %>
+                            </div>
+                        </div>
+                        <div class="card-footer"><a href="#" class="card-button">Book Now</a></div>
+                    </div>
                 </li>
             <% }); %>
         </ul>
     <% } else if (restaurants.length === 0 && (req.query.FoodCategory || req.query.AreaCategory)) { %>
-        <h2>No Results Found</h2>
+        <h2 class="no-results">No Results Found</h2>
     <% } %>
 </body>
 </html>

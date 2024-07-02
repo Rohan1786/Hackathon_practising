@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Manage Bookings</title>
+</head>
+<body>
+  <h1>Manage Bookings</h1>
+  <table border="1">
+    <tr>
+      <th>Username</th>
+      <th>Table Number</th>
+      <th>Booking Date</th>
+      <th>Booking Time</th>
+    </tr>
+    <% bookings.forEach(booking => { %>
+      <tr>
+        <td><%= booking.username %></td>
+        <td><%= booking.tableNumber %></td>
+        <td><%= booking.bookingDate.toDateString() %></td>
+        <td><%= booking.bookingTime %></td>
+      </tr>
+    <% }); %>
+  </table>
+</body>
+</html>

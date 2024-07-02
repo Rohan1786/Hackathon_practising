@@ -446,20 +446,28 @@ router.post('/add-seat', async (req, res) => {
 });
 router.get('/profile', async (req, res) => {
   try {
-    // Fetch order records grouped by username
-    const orderRecords = await Order.aggregate([
+    if (!req.session.user) {
+      req.flash('error', 'You need to log in first');
+      return res.redirect('/login');
+    }
+
+    const username = req.session.user.username;
+
+    // Fetch the user details
+    const user = await User.findOne({ username });
+    if (!user) {
+      return res.status(404).send('User not found');
+    }
+
+    // Fetch the order count for the user
+    const orderRecord = await Order.aggregate([
+      {
+        $match: { username: username }
+      },
       {
         $group: {
           _id: "$username",
           count: { $sum: 1 }
-        }
-      },
-      {
-        $lookup: {
-          from: "users",
-          localField: "_id",
-          foreignField: "username",
-          as: "userDetails"
         }
       },
       {
@@ -471,10 +479,93 @@ router.get('/profile', async (req, res) => {
       }
     ]);
 
-    res.render('profile', { orderRecords });
+    // Render the profile page with user and order count
+    res.render('profile', { user, orderRecord: orderRecord[0] || null });
   } catch (error) {
-    console.error('Error fetching order records:', error);
-    res.status(500).send('Error fetching order records');
+    console.error('Error fetching profile data:', error);
+    res.status(500).send('Error fetching profile data');
+  }
+});
+
+
+router.get('/tables', async (req, res) => {
+  try {
+    const tables = await Table.find({});
+    res.render('tables', { tables });
+  } catch (error) {
+    console.error('Error fetching tables:', error);
+    res.status(500).send('Error fetching tables');
+  }
+});
+
+// Route to book a table
+router.post('/book-table', async (req, res) => {
+  try {
+    const { username, tableNumber, bookingDate, bookingTime } = req.body;
+
+    // Check if table is available
+    const table = await Table.findOne({ tableNumber, isAvailable: true });
+    if (!table) {
+      req.flash('error', 'Table not available');
+      return res.redirect('/tables');
+    }
+
+    // Create booking
+    const booking = new Booking({ username, tableNumber, bookingDate, bookingTime });
+    await booking.save();
+
+    // Update table availability
+    table.isAvailable = false;
+    await table.save();
+
+    req.flash('success', 'Table booked successfully');
+    res.redirect('/tables');
+  } catch (error) {
+    console.error('Error booking table:', error);
+    res.status(500).send('Error booking table');
+  }
+});
+
+// Admin route to add/update tables
+router.post('/admin/add-table', async (req, res) => {
+  try {
+    const { tableNumber, capacity } = req.body;
+    let table = await Table.findOne({ tableNumber });
+
+    if (table) {
+      table.capacity = capacity;
+    } else {
+      table = new Table({ tableNumber, capacity });
+    }
+
+    await table.save();
+    req.flash('success', 'Table added/updated successfully');
+    res.redirect('/admin/manage-tables');
+  } catch (error) {
+    console.error('Error adding/updating table:', error);
+    res.status(500).send('Error adding/updating table');
+  }
+});
+
+// Admin route to view/manage tables
+router.get('/admin/manage-tables', async (req, res) => {
+  try {
+    const tables = await Table.find({});
+    res.render('manageTables', { tables });
+  } catch (error) {
+    console.error('Error fetching tables:', error);
+    res.status(500).send('Error fetching tables');
+  }
+});
+
+// Admin route to view/manage bookings
+router.get('/admin/manage-bookings', async (req, res) => {
+  try {
+    const bookings = await Booking.find({});
+    res.render('manageBookings', { bookings });
+  } catch (error) {
+    console.error('Error fetching bookings:', error);
+    res.status(500).send('Error fetching bookings');
   }
 });
 
