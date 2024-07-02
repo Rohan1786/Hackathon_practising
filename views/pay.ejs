@@ -2,11 +2,11 @@
 <html>
 <head>
     <title>Payment</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Jost:wght@500&display=swap" rel="stylesheet">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
-    <!-- Include FileSaver.js -->
     <script src="FileSaver.js"></script> <!-- Adjust path accordingly -->
     <style type="text/css">
         /* Your CSS styles here */
@@ -35,6 +35,8 @@
             padding: 40px;
             overflow-y: auto;
             border-top: 10px solid #0989ff;
+            border-radius: 8px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
         }
 
         .flex {
@@ -49,18 +51,12 @@
             height: 50px;
             width: 100%;
             border: 1px solid #e8e8e8;
-        }
-
-        .m10 {
+            font-size: 16px;
             margin-top: 10px;
         }
 
-        .m20 {
-            margin-top: 20px;
-        }
-
         button {
-            width: 200px;
+            width: 100%;
             border: none;
             outline: none;
             cursor: pointer;
@@ -68,6 +64,9 @@
             background: #0989ff;
             color: #fff;
             padding: 0px 20px;
+            font-size: 16px;
+            margin-top: 20px;
+            border-radius: 5px;
         }
 
         input:focus {
@@ -83,12 +82,13 @@
             width: 200px;
             border: 1px solid #999;
             background: #efefef;
+            margin: 0 auto;
         }
 
         .qr_code {
             width: 100%;
-            height: 100%;
-            display: none;
+            display: none; /* Initially hidden */
+            text-align: center;
         }
 
         p {
@@ -100,8 +100,48 @@
         .im {
             max-width: 100%;
             width: 150px;
+            display: block;
+            margin: 20px auto;
         }
-    
+
+        /* Modal styles */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 999;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0, 0, 0, 0.5);
+        }
+
+        .modal-content {
+            background-color: #fefefe;
+            margin: 15% auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%;
+            max-width: 400px;
+            text-align: center;
+            border-radius: 8px;
+        }
+
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .close:hover,
+        .close:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
     </style>
     <script type="text/javascript">
         $(document).ready(function() {
@@ -112,12 +152,26 @@
                 console.log(upi);
                 $(".get_qr").attr("src", upi);
                 $(".pay_now").hide(); // Hide the "Pay Now" button
-                $(".download_now").show(); // Show the "Download Invoice" button
+                $(".transaction_form").show(); // Show the transaction input form
+            });
+
+            $(".submit_transaction").click(function() {
+                var transactionId = $(".transaction_id").val().trim();
+                if (transactionId !== "") {
+                    $(".modal").css("display", "block");
+                } else {
+                    alert("Please enter UTR/REFERENCE/TRANSACTION ID");
+                }
+            });
+
+            $(".close").click(function() {
+                $(".modal").css("display", "none");
+                $(".download_now").show(); // Show the "Download Invoice" button after closing modal
             });
 
             $(".download_now").click(function() {
-                var id = $(".id").val();
-                if (id != "") {
+                var id = $(".transaction_id").val();
+                if (id !== "") {
                     // Generate invoice content dynamically
                     var invoiceContent = generateInvoice(id);
                     var blob = new Blob([invoiceContent], { type: "text/plain;charset=utf-8" });
@@ -135,26 +189,60 @@
                 return invoiceContent;
             }
         });
+
+
+        const sendMessage = () => {
+          const button = document.querySelector('.submit_transaction.m20');
+          button.addEventListener('click', async () => {
+            const message = 'Thank you! Your table has been reserved successfully';
+            try {
+              const response = await fetch('/send-sms', {
+                method: 'POST',
+                headers: {
+                  'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ message })
+              });
+              const data = await response.json();
+              if (data.success) {
+                console.log('SMS sent successfully:', data.result);
+              } else {
+                console.error('Error sending SMS:', data.error);
+              }
+            } catch (error) {
+              console.error('Error sending SMS:', error);
+            }
+          });
+        }
+    
+        document.addEventListener('DOMContentLoaded', sendMessage);
     </script>
 </head>
-
 <body>
     <section>
         <h1>Payment</h1>
         <div class="qr_code m20">
             <p>Scan the QR Code with any UPI App and pay the amount then download the source code.</p>
-            <center><img src="" alt="QR CODE" class="get_qr m10"></center>
-            <center><img src="1.png" class="im m10"></center>
+            <img src="" alt="QR CODE" class="get_qr m10">
+            <img src="/images/1.png" class="im">
+        </div>
+        <div class="transaction_form" style="display: none;">
             <div class="flex m20">
-                <!-- <label>UTR/REFERENCE/TRANSACTION ID**</label> -->
-                <!-- <input type="number" name="email" placeholder="UTR/REFERENCE/TRANSACTION ID**" class="m10 id"> -->
+                <label for="transaction_id">Enter UTR/REFERENCE/TRANSACTION ID*</label>
+                <input type="text" id="transaction_id" name="transaction_id" class="m10 transaction_id">
             </div>
-            <!-- <button class="download_now m20" style="display: none;">Download Invoice</button> -->
+            <button class="submit_transaction m20" onclick="sendmessage()">Submit</button>
         </div>
-        <div class="form">
-            <button class="pay_now m20">Pay Now</button>
-        </div>
+        <button class="pay_now m20">Pay Now</button>
     </section>
-</body>
 
+    <!-- Modal -->
+    <div id="myModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <p>Thank you for booking! Confirmation message will be sent.</p>
+        </div>
+    </div>
+      <button class="submit_transaction m20">Send SMS</button>
+</body>
 </html>

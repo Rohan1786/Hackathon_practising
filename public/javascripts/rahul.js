@@ -26,7 +26,12 @@ function determineWords(speech, words) {
     speech.text = "I am your virtual assistant.";
   } else if (words.includes("hello") || words.includes("hi") || words.includes("hey") || words.includes("good morning") || words.includes("good afternoon") || words.includes("good evening")) {
     speech.text = "Hello! How can I assist you?";
-  } else if (words.includes("how does this site work") || words.includes("how does your website function") || words.includes("explain your website") || words.includes("how do I use this site") || words.includes("how to use this website")) {
+  } else if (words.includes("What your doing here") || words.includes("hi") || words.includes("Good Noon") || words.includes("good morning") || words.includes("good afternoon") || words.includes("good evening")) {
+    speech.text = "Love to see you here";
+  }else if (words.includes("how i can buy a book  table") || words.includes("book me a table") || words.includes("hey") || words.includes("good morning") || words.includes("good afternoon") || words.includes("good evening")) {
+    speech.text = "you go with my website";
+  }
+   else if (words.includes("how does this site work") || words.includes("how does your website function") || words.includes("explain your website") || words.includes("how do I use this site") || words.includes("how to use this website")) {
     speech.text = "Our website allows you to browse restaurants, view availability, and reserve tables seamlessly.";
   } else if (words.includes("what restaurants do you have") || words.includes("show me restaurants") || words.includes("list of restaurants") || words.includes("browse eateries") || words.includes("find dining options") || words.includes("available restaurants")) {
     speech.text = "We feature a variety of restaurants offering different cuisines. You can explore them by browsing or searching.";

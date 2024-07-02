@@ -99,7 +99,7 @@ const orderSchema = new mongoose.Schema({
   paymentMethod: { 
     type: String, 
     required: true, 
-    enum: ['Credit Card', 'Debit Card', 'PayPal']
+    enum: ['Credit Card', 'Debit Card', 'PayPal','UPI']
   }
 });
 

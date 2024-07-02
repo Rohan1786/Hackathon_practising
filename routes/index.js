@@ -106,7 +106,7 @@ router.post('/login', async (req, res) => {
       return res.redirect('/login');
     }
     req.session.user = { email };
-    res.redirect('/order');
+    res.redirect('/search');
   } catch (error) {
     console.error('Error logging in user:', error);
     req.flash('error', 'Error logging in user');

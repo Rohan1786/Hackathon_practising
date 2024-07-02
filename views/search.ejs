@@ -1,191 +1,142 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Search Restaurants</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 20px;
-            background-color: #f4f4f4;
-        }
-        
-        h1, h2 {
-            text-align: center;
-            color: #333;
-        }
+  <title><%= title %></title>
+  <style>
+    /* Paste your CSS styles here */
+    /* General Styles */
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #f0f0f0;
+    }
 
-        form {
-            max-width: 600px;
-            margin: 0 auto;
-            padding: 20px;
-            background: #fff;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            border-radius: 8px;
-        }
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 20px;
+    }
 
-        label {
-            display: block;
-            margin-bottom: 8px;
-            font-weight: bold;
-        }
+    /* Card Styles */
+    .cards-container {
+      display: flex;
+      justify-content: space-between;
+      flex-wrap: wrap;
+    }
 
-        select, button {
-            width: 100%;
-            padding: 10px;
-            margin-bottom: 20px;
-            border-radius: 5px;
-            border: 1px solid #ccc;
-            font-size: 16px;
-        }
+    .card {
+      width: calc(33.33% - 20px); /* Adjust card width for 3 cards with space between */
+      background: #ee4848;
+      border-radius: 8px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      margin-bottom: 20px;
+      overflow: hidden; /* Ensure content doesn't overflow */
+    }
 
-        button {
-            background-color: #28a745;
-            color: white;
-            border: none;
-            cursor: pointer;
-            transition: background-color 0.3s ease;
-        }
+    .card-img {
+      height: 150px; /* Fixed height for image */
+      border-top-left-radius: 8px;
+      border-top-right-radius: 8px;
+      background-size: cover;
+      background-position: center;
+    }
 
-        button:hover {
-            background-color: #218838;
-        }
+    .card-info {
+      padding: 20px;
+    }
 
-        ul {
-            list-style: none;
-            padding: 0;
-            max-width: 100%;
-            margin: 20px auto;
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-        }
+    .card-footer {
+      padding: 10px 20px;
+      border-top: 1px solid #eee;
+      text-align: center;
+    }
 
-        li {
-            margin: 10px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            border-radius: 8px;
-        }
+    /* Text Styles */
+    .text-title {
+      font-size: 1.2em;
+      font-weight: bold;
+      margin-bottom: 10px;
+    }
 
-        .card {
-            width: 250px; /* Adjusted width for larger screens */
-            height: 470px; /* Increased height */
-            padding: 10px; /* Adjusted padding */
-            position: relative;
-            overflow: hidden;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
-            background: #fff; /* Added background */
-            border-radius: 8px;
-            transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
-        }
+    .text-body {
+      font-size: 0.9em;
+      color: #666;
+      margin-bottom: 10px;
+    }
 
-        .card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
-        }
+    /* Button Styles */
+    .card-button {
+      display: inline-block;
+      padding: 10px 20px;
+      background-color: #ffae42;
+      color: #ffffff;
+      text-decoration: none;
+      border-radius: 5px;
+      transition: background-color 0.3s ease;
+    }
 
-        .card-img {
-            background-color: #ffcaa6;
-            height: 40%;
-            width: 100%;
-            border-radius: 8px 8px 0 0; /* Rounded top corners */
-            transition: .3s ease;
-        }
+    .card-button:hover {
+      background-color: #ffca7d;
+    }
 
-        .card-info {
-            padding: 10px;
-        }
+    /* Responsive Design */
+    @media (max-width: 1024px) {
+      .card {
+        width: calc(50% - 20px); /* Adjust card width for 2 cards with space between */
+      }
+    }
 
-        .text-title {
-            font-weight: 900;
-            font-size: 1.2em;
-            line-height: 1.5;
-            margin-bottom: 10px;
-        }
-
-        .text-body {
-            font-size: .9em;
-            line-height: 1.5;
-        }
-
-        .card-footer {
-            width: 100%;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding-top: 10px;
-            border-top: 1px solid #ddd;
-            margin-top: auto; /* Push footer to the bottom */
-        }
-
-        .card-button {
-            border: 1px solid #252525;
-            display: inline-block;
-            padding: .5em 1em;
-            cursor: pointer;
-            border-radius: 50px;
-            transition: .3s ease-in-out;
-            background-color: #252525;
-            color: #fff;
-            text-decoration: none;
-            text-align: center;
-            margin-top: 10px;
-            width: 100%; /* Full width button */
-        }
-
-        .card-button:hover {
-            background-color: #ffcaa6;
-            color: #252525;
-        }
-
-        /* Responsive adjustments */
-        @media screen and (max-width: 768px) {
-            .card {
-                width: 100%; /* Full width on smaller screens */
-                max-width: 300px; /* Limit width for readability */
-            }
-        }
-    </style>
+    @media (max-width: 768px) {
+      .card {
+        width: calc(100% - 20px); /* Adjust card width for 1 card with space */
+      }
+    }
+  </style>
 </head>
 <body>
-    <h1>Search Restaurants</h1>
+    
+  <div class="container">
+    <h1>Welcome to the Restaurant Finder</h1>
+    
+    <form action="/home" method="GET">
+      <label for="foodCategory">Select Food Category:</label>
+      <select id="foodCategory" name="foodCategory">
+        <option value="">All</option>
+        <% foodCategories.forEach(category => { %>
+          <option value="<%= category %>" <%= category === foodCategory ? 'selected' : '' %>><%= category %></option>
+        <% }); %>
+      </select>
 
-    <form action="/search" method="GET">
-        <label for="AreaCategory">Area Category:</label>
-        <select id="AreaCategory" name="AreaCategory">
-            <option value="">Select an area category</option>
-            <% areaCategories.forEach(area => { %>
-                <option value="<%= area %>"><%= area %></option>
-            <% }); %>
-        </select>
+      <label for="areaCategory">Select Area Category:</label>
+      <select id="areaCategory" name="areaCategory">
+        <option value="">All</option>
+        <% areaCategories.forEach(category => { %>
+          <option value="<%= category %>" <%= category === areaCategory ? 'selected' : '' %>><%= category %></option>
+        <% }); %>
+      </select>
 
-        <button type="submit">Search</button>
+      <button type="submit">Filter</button>
     </form>
 
-    <% if (restaurants.length > 0) { %>
-        <h2>Search Results</h2>
-        <ul>
-            <% restaurants.forEach(restaurant => { %>
-                <li>
-                    <div class="card">
-                        <div class="card-img" style="background-image: url('<%= restaurant.image %>');"></div>
-                        <div class="card-info">
-                            <div class="text-title"><%= restaurant.Res %></div>
-                            <div class="text-body">
-                                <strong>Address:</strong> <%= restaurant.Address %> <br>
-                                <strong>Food Category:</strong> <%= restaurant.FoodCategory %> <br>
-                                <strong>Area Category:</strong> <%= restaurant.AreaCategory %>
-                            </div>
-                        </div>
-                        <div class="card-footer"><a href="#" class="card-button">Book Now</a></div>
-                    </div>
-                </li>
-            <% }); %>
-        </ul>
-    <% } else if (restaurants.length === 0 && (req.query.FoodCategory || req.query.AreaCategory)) { %>
-        <h2 class="no-results">No Results Found</h2>
-    <% } %>
+    <h2>Restaurants:</h2>
+    <div class="cards-container">
+      <% restaurants.forEach(restaurant => { %>
+        <div class="card">
+          <div class="card-img" style="background-image: url('<%= restaurant.image %>');"></div>
+          <div class="card-info">
+            <h3 class="text-title"><%= restaurant.name %></h3>
+            <p class="text-body"><strong>Food Category:</strong> <%= restaurant.foodCategory %></p>
+            <p class="text-body"><strong>Area Category:</strong> <%= restaurant.areaCategory %></p>
+          </div>
+          <div class="card-footer">
+            <a href="/book-now/<%= restaurant._id %>" class="card-button">Book Now</a>
+            <!-- Replace /book-now with actual booking link if available -->
+          </div>
+        </div>
+      <% }); %>
+    </div>
+  </div>
+  
 </body>
 </html>
