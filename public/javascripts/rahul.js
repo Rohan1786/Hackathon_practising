@@ -56,5 +56,5 @@ function determineWords(speech, words) {
 function activateBot() {
   recognition.start();
   // Ensure the gif path is correct and the gif is properly updated
-  document.getElementById("robotImage").src = "robosgbit.gif";
+  document.getElementById("robotImage").src = "./images/robosgbit.gif";
 }
